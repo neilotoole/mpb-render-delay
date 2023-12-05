@@ -13,7 +13,7 @@ func main() {
 	delayCh := make(chan struct{})
 	time.AfterFunc(delay, func() { close(delayCh) })
 
-	p := mpb.New(mpb.WithRenderDelay(delayCh))
+	p := mpb.New(mpb.WithAutoRefresh(), mpb.WithRenderDelay(delayCh))
 	bar := p.New(0, mpb.BarStyle(), mpb.BarRemoveOnComplete())
 	bar.Abort(true)
 	bar.Wait() // <-- blocks here until render delay completes
