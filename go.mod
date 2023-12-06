@@ -2,10 +2,7 @@ module github.com/neilotoole/mpb-render-delay
 
 go 1.21.4
 
-require (
-	
-	github.com/vbauerster/mpb/v8 v8.7.1-0.20231205062852-da3162c67234
-)
+require github.com/vbauerster/mpb/v8 v8.7.1-0.20231205062852-da3162c67234
 
 require (
 	github.com/VividCortex/ewma v1.2.0 // indirect

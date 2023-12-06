@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	const delay = time.Second * 5
+	const delay = time.Second
 	start := time.Now()
 	delayCh := make(chan struct{})
 	time.AfterFunc(delay, func() { close(delayCh) })
@@ -21,10 +21,10 @@ func main() {
 	p := mpb.New(mpb.WithAutoRefresh(), mpb.WithRenderDelay(delayCh))
 
 	for i := 0; i < 10; i++ {
-		startBarWithLifespan(fmt.Sprintf("%d: aborts before render delay", i), barWg, p, time.Second)
+		startBarWithLifespan(fmt.Sprintf("%d: aborts before render delay", i), barWg, p, time.Millisecond*500, true)
 	}
 
-	startBarWithLifespan("aborts after render delay", barWg, p, time.Second*10)
+	startBarWithLifespan("aborts after render delay", barWg, p, time.Second*4, false)
 
 	barWg.Wait()
 	p.Wait()
@@ -32,9 +32,13 @@ func main() {
 	fmt.Println("Elapsed: ", time.Since(start))
 }
 
-func startBarWithLifespan(name string, wg *sync.WaitGroup, p *mpb.Progress, lifespan time.Duration) {
+func startBarWithLifespan(name string, wg *sync.WaitGroup, p *mpb.Progress, lifespan time.Duration, colorize bool) {
 	death := time.Now().Add(lifespan)
 	wg.Add(1)
+
+	if colorize {
+		name = "\033[31m" + name + "\033[0m" // red
+	}
 
 	bar := p.New(0,
 		mpb.BarStyle(),
