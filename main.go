@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	const delay = time.Second * 5
+	const delay = time.Second * 3
 	start := time.Now()
 	delayCh := make(chan struct{})
 	time.AfterFunc(delay, func() { close(delayCh) })
@@ -24,7 +24,7 @@ func main() {
 		startBarWithLifespan(fmt.Sprintf("%d: aborts before render delay", i), barWg, p, time.Second)
 	}
 
-	startBarWithLifespan("aborts after render delay", barWg, p, time.Second*10)
+	startBarWithLifespan("aborts after render delay", barWg, p, time.Second*6)
 
 	barWg.Wait()
 	p.Wait()
